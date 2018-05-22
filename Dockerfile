@@ -1,4 +1,6 @@
-FROM ogomez/arm32v7-alpine
+FROM resin/raspberrypi3-alpine-python:latest
+
+ENV INITSYSTEM on
 
 ENV LANG=en_US.UTF-8
 
