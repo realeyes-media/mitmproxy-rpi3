@@ -1,41 +1,38 @@
-FROM resin/raspberrypi3-alpine-python:latest
+FROM resin/raspberrypi3-alpine:3.7
 
-ENV INITSYSTEM on
+ENV MITMPROXY_VERSION="4.0.1"
 
-ENV LANG=en_US.UTF-8
+RUN [ "cross-build-start" ]
 
-COPY requirements.txt /tmp/requirements.txt
+RUN printf "git+https://github.com/mitmproxy/mitmproxy.git@v${MITMPROXY_VERSION}" > /tmp/requirements.txt
 
-# add our user first to make sure the ID get assigned consistently,
-# regardless of whatever dependencies get added
-RUN addgroup -S mitmproxy && adduser -S -G mitmproxy mitmproxy \
-    && apk add --no-cache \
-        su-exec \
-        git \
-        g++ \
-        libffi \
-        libffi-dev \
-        libstdc++ \
-        openssl \
-        openssl-dev \
-        python3 \
-        python3-dev \
-    && python3 -m ensurepip \
-    && LDFLAGS=-L/lib pip3 install -r /tmp/requirements.txt \
-    && apk del --purge \
-        git \
-        g++ \
-        libffi-dev \
-        openssl-dev \
-        python3-dev \
-    && rm /tmp/requirements.txt \
-    && rm -rf ~/.cache/pip
+RUN apk add --no-cache \
+    python3 \
+    python3-dev \
+    build-base \
+    git \
+    libffi-dev \
+    libxml2-dev \
+    libxslt-dev \
+    libjpeg-turbo-dev \
+    libwebp-dev \
+    openssl-dev
 
-VOLUME /home/mitmproxy/.mitmproxy
+RUN python3 -m ensurepip \
+    && ln -s /lib /lib64
 
-COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
-RUN chmod +x /usr/local/bin/docker-entrypoint.sh
-ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
+RUN pip3 install --upgrade setuptools pip
 
-EXPOSE 8080 8081
-CMD ["mitmproxy"]
+RUN pip3 install -r /tmp/requirements.txt \
+    && rm -rf /var/cache/apk/* \
+    && rm -rf ~/.cache/pip \
+    && rm -rf /tmp/pip_build_root \
+    && rm -rf /root/.cache \
+    && rm -rf /usr/lib/python*/ensurepip
+
+RUN [ "cross-build-end" ]
+
+# Location of the default mitmproxy CA files
+VOLUME ["/ca"]
+
+ENTRYPOINT [ "/usr/bin/mitmweb", "--cadir", "/ca", "--wiface", "0.0.0.0" ]
