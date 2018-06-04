@@ -2,6 +2,8 @@ FROM resin/raspberrypi3-alpine:3.7
 
 ENV MITMPROXY_VERSION="4.0.1"
 
+ENV LANG="US.UTF-8"
+
 RUN [ "cross-build-start" ]
 
 RUN printf "git+https://github.com/mitmproxy/mitmproxy.git@v${MITMPROXY_VERSION}" > /tmp/requirements.txt

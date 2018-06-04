@@ -2,6 +2,8 @@ FROM alpine:3.7
 
 ENV MITMPROXY_VERSION="4.0.1"
 
+ENV LANG="US.UTF-8"
+
 RUN printf "git+https://github.com/mitmproxy/mitmproxy.git@v${MITMPROXY_VERSION}" > /tmp/requirements.txt
 
 RUN apk add --no-cache \
@@ -33,4 +35,4 @@ VOLUME ["/ca"]
 
 EXPOSE 8080 8081
 
-CMD [ "/usr/bin/mitmweb", "--cadir", "/ca", "--wiface", "0.0.0.0" ]
+CMD [ "/usr/bin/mitmweb" ]
