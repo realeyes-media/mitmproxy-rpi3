@@ -35,4 +35,6 @@ RUN [ "cross-build-end" ]
 # Location of the default mitmproxy CA files
 VOLUME ["/ca"]
 
-ENTRYPOINT [ "/usr/bin/mitmweb", "--cadir", "/ca", "--wiface", "0.0.0.0" ]
+EXPOSE 8080 8081
+
+CMD [ "/usr/bin/mitmweb", "--cadir", "/ca", "--wiface", "0.0.0.0" ]
