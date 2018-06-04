@@ -32,11 +32,13 @@ RUN pip3 install -r /tmp/requirements.txt \
     && rm -rf /root/.cache \
     && rm -rf /usr/lib/python*/ensurepip
 
+RUN mkdir -p /opt/mitmoutput
+
 RUN [ "cross-build-end" ]
 
 # Location of the default mitmproxy CA files
-VOLUME ["/ca"]
+VOLUME ["/opt/mitmoutput"]
 
 EXPOSE 8080 8081
 
-CMD [ "/usr/bin/mitmweb", "--cadir", "/ca", "--wiface", "0.0.0.0" ]
+CMD [ "/usr/bin/mitmweb","-p","8888","--listen-host","192.168.13.1","--web-iface","10.1.10.75","--mode","transparent","--showhost","-w","/opt/mitmoutput/defaultoutfile" ]
