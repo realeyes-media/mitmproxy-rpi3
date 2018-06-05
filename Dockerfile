@@ -4,6 +4,8 @@ ENV MITMPROXY_VERSION="4.0.1"
 
 ENV LANG="US.UTF-8"
 
+ENV max_mem_in_kb="550000"
+
 RUN [ "cross-build-start" ]
 
 RUN printf "git+https://github.com/mitmproxy/mitmproxy.git@v${MITMPROXY_VERSION}" > /tmp/requirements.txt
@@ -38,6 +40,9 @@ RUN [ "cross-build-end" ]
 
 # Location of the default mitmproxy CA files
 VOLUME ["/opt/mitmoutput"]
+
+HEALTHCHECK --interval=5s --timeout=5s --retries=3 \
+    CMD if [ $(free -m | grep Mem: | awk '{print $3}') -le ${max_mem_in_kb} ]; then exit 0; else exit 1; fi
 
 EXPOSE 8080 8081
 
