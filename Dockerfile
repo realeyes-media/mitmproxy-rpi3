@@ -36,10 +36,9 @@ RUN pip3 install -r /tmp/requirements.txt \
 
 RUN mkdir -p /opt/mitmoutput && mkdir -p /opt/mitmaddons
 
-RUN wget -O /opt/mitmaddons/har_dump.py https://raw.githubusercontent.com/mitmproxy/mitmproxy/master/examples/complex/har_dump.py
-
 RUN [ "cross-build-end" ]
 
+COPY mitmaddons/* /opt/mitmaddons/
 # Location of the default mitmproxy CA files
 VOLUME ["/opt/mitmoutput"]
 
