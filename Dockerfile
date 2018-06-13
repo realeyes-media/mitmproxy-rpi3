@@ -34,7 +34,9 @@ RUN pip3 install -r /tmp/requirements.txt \
     && rm -rf /root/.cache \
     && rm -rf /usr/lib/python*/ensurepip
 
-RUN mkdir -p /opt/mitmoutput
+RUN mkdir -p /opt/mitmoutput && mkdir -p /opt/mitmaddons
+
+RUN wget -O /opt/mitmaddons/har_dump.py https://raw.githubusercontent.com/mitmproxy/mitmproxy/master/examples/complex/har_dump.py
 
 RUN [ "cross-build-end" ]
 
