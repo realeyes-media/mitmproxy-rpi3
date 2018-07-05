@@ -1,6 +1,6 @@
 FROM resin/raspberrypi3-alpine:3.7
 
-ENV MITMPROXY_VERSION="4.0.1"
+ENV MITMPROXY_VERSION="4.0.3"
 
 ENV LANG="US.UTF-8"
 
