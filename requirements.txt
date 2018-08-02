@@ -1,1 +1,4 @@
-setuptools pip httpie
+setuptools
+pip
+httpie
+mitmproxy==4.0.4
