@@ -45,7 +45,7 @@ VOLUME ["/opt/mitmoutput"]
 WORKDIR /opt/mitmoutput
 
 HEALTHCHECK --interval=5s --timeout=5s --retries=3 \
-    CMD if [ $(free -m | grep Mem: | awk '{print $3}') -le ${max_mem_in_kb} ]; then exit 0; else exit 1; fi
+    CMD if [ $(free -k | grep Mem: | awk '{print $3}') -le ${max_mem_in_kb} ]; then exit 0; else exit 1; fi
 
 EXPOSE 8080 8081
 
