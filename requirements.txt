@@ -1,4 +1,4 @@
 setuptools
 pip
 httpie
-mitmproxy==4.0.4
+mitmproxy==5.0.0
